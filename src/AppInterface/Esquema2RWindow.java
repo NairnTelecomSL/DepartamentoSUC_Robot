@@ -5,8 +5,11 @@
  */
 package AppInterface;
 
+import ClassApplication.FileReader;
 import ClassApplication.RegistroApplication;
 import DataClass.Registro;
+import Exceptions.NoFilesException;
+import Exceptions.NoRelationshipException;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -54,7 +57,7 @@ public class Esquema2RWindow extends javax.swing.JFrame {
 
         reg2Label = new javax.swing.JTextField();
         reg1Label = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        generateButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         migaLabel = new javax.swing.JTextField();
         limpiaFiltroButton = new javax.swing.JButton();
@@ -77,11 +80,11 @@ public class Esquema2RWindow extends javax.swing.JFrame {
         reg1Label.setText("Registro1");
         reg1Label.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jButton1.setText("Generar");
-        jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        generateButton.setText("Generar");
+        generateButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        generateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                generateButtonActionPerformed(evt);
             }
         });
 
@@ -140,7 +143,7 @@ public class Esquema2RWindow extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(limpiaFiltroButton, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(generateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE))
                 .addGap(28, 28, 28))
         );
@@ -163,17 +166,16 @@ public class Esquema2RWindow extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(limpiaFiltroButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(generateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(7, 7, 7))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-         ArrayList<String> sucs1 = RegistroApplication.getSUCS(this.registros, this.reg1Label.getText(), this.migaLabel.getText());
-            ArrayList<String> sucs2 = RegistroApplication.getSUCS(this.registros, this.reg2Label.getText(), this.migaLabel.getText());
+    private void generateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateButtonActionPerformed
+        ArrayList<String> sucs1 = RegistroApplication.getSUCS(this.registros, this.reg1Label.getText(), this.migaLabel.getText());
+        ArrayList<String> sucs2 = RegistroApplication.getSUCS(this.registros, this.reg2Label.getText(), this.migaLabel.getText());
         try {
             ArrayList<String> result = RegistroApplication.getSUCRelationship(sucs1, sucs2);
             
@@ -181,13 +183,12 @@ public class Esquema2RWindow extends javax.swing.JFrame {
             this.resultadosField.setText(null);
             for (int i = 0; i < result.size(); i++) {
                 resultText += " - " +result.get(i) + "\n";
-            }
-            
+            }            
             resultadosField.setText(resultText);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error: Relación de Registros" , 0);
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
+        } catch (NoRelationshipException ex) {
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Relación de Registros" , 1);
+        } 
+    }//GEN-LAST:event_generateButtonActionPerformed
     
     private void limpiaFiltroButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiaFiltroButtonActionPerformed
         this.initialiceFilter();
@@ -210,13 +211,17 @@ public class Esquema2RWindow extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new Esquema2RWindow(RegistroApplication.readCSVData("Files//Robot_Tesa_W49.csv"), "Run").setVisible(true);
+                try {
+                    new Esquema2RWindow(FileReader.readCSVData("Files//Robot_Tesa_W49.csv"), "Run").setVisible(true);
+                } catch (NoFilesException ex) {
+                    JOptionPane.showMessageDialog(null,ex.getMessage(), "Error: Fichero" , 0);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton generateButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

@@ -5,7 +5,7 @@
  */
 package AppInterface;
 
-import ClassApplication.RegistroApplication;
+import ClassApplication.FileReader;
 import DataClass.Registro;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -13,6 +13,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -129,8 +130,11 @@ public class RobotWindow extends javax.swing.JFrame {
         resetFilterButton1 = new javax.swing.JButton();
         identificacionFilter = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        esquemaButton = new javax.swing.JButton();
         jLabelmiga = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu2 = new javax.swing.JMenu();
+        buscarCablesButton = new javax.swing.JMenuItem();
 
         jMenu1.setText("jMenu1");
 
@@ -159,6 +163,7 @@ public class RobotWindow extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tablaDocAc.setToolTipText("");
         tablaDocAc.setColumnSelectionAllowed(true);
         tablaDocAc.setSelectionBackground(new java.awt.Color(51, 255, 51));
         jScrollPane1.setViewportView(tablaDocAc);
@@ -196,16 +201,26 @@ public class RobotWindow extends javax.swing.JFrame {
         jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
 
-        esquemaButton.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-        esquemaButton.setText("Generar Esquema");
-        esquemaButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                esquemaButtonActionPerformed(evt);
-            }
-        });
-
         jLabelmiga.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabelmiga.setText("Filtrar Miga: ");
+
+        jLabel1.setFont(new java.awt.Font("Consolas", 2, 10)); // NOI18N
+        jLabel1.setText("Desarrollado por Álvaro Rofa Aranda");
+
+        jMenu2.setBorder(new javax.swing.border.MatteBorder(null));
+        jMenu2.setText("Acciones");
+
+        buscarCablesButton.setText("Buscar cables entre registros");
+        buscarCablesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarCablesButtonActionPerformed(evt);
+            }
+        });
+        jMenu2.add(buscarCablesButton);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -229,14 +244,19 @@ public class RobotWindow extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(identificacionFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(29, 29, 29)
-                                .addComponent(resetFilterButton1))
-                            .addComponent(idFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(migaFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 496, Short.MAX_VALUE)
-                        .addComponent(esquemaButton)
-                        .addGap(33, 33, 33)))
+                                .addComponent(idFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(migaFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(identificacionFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(29, 29, 29)
+                                        .addComponent(resetFilterButton1)))
+                                .addGap(363, 698, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel1)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -244,27 +264,23 @@ public class RobotWindow extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(robotText)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(migaFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelmiga, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(idFilter)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(resetFilterButton1)
-                            .addComponent(identificacionFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(22, 22, 22))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(esquemaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(migaFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelmiga, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(resetFilterButton1)
+                    .addComponent(identificacionFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1))
         );
 
         pack();
@@ -290,9 +306,9 @@ public class RobotWindow extends javax.swing.JFrame {
         this.activateFilter(identificacionFilter);
     }//GEN-LAST:event_identificacionFilterActionPerformed
 
-    private void esquemaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_esquemaButtonActionPerformed
+    private void buscarCablesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarCablesButtonActionPerformed
         new Esquema2RWindow(registros, this.robotName).setVisible(true);
-    }//GEN-LAST:event_esquemaButtonActionPerformed
+    }//GEN-LAST:event_buscarCablesButtonActionPerformed
     
     private void resetFilter(){
         idFilter.setText(null);
@@ -306,20 +322,27 @@ public class RobotWindow extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new RobotWindow(RegistroApplication.readCSVData("Files//Robot_Tesa_W49.csv") , "ROBOT_RUN").setVisible(true);
+                try {
+                    new RobotWindow(FileReader.readCSVData("Files//Robot_Tesa_W49.csv") , "ROBOT_RUN").setVisible(true);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null,ex.getMessage(), "Error: Fichero" , 0);
+                }
             }
         });
     }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton esquemaButton;
+    private javax.swing.JMenuItem buscarCablesButton;
     private javax.swing.JTextField idFilter;
     private javax.swing.JTextField identificacionFilter;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelmiga;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField migaFilter;
     private javax.swing.JButton resetFilterButton1;

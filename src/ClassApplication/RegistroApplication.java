@@ -6,9 +6,7 @@
 package ClassApplication;
 
 import DataClass.Registro;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import Exceptions.NoRelationshipException;
 import java.util.ArrayList;
 
 /**
@@ -17,112 +15,15 @@ import java.util.ArrayList;
  */
 public final class RegistroApplication {
     public RegistroApplication(){}
-    
-    /**
-     * Lee el fichero CSV pasádo por parámetro
-     * @param csvFile
-     * @return 
-     */
-    public static ArrayList<Registro> readCSVData(String csvFile){
-        BufferedReader br = null;
-        ArrayList<Registro> registros = new ArrayList<>();
-        int numFila = 1, REG = 0;
-        try {
-            br = new BufferedReader(new FileReader(csvFile));
-            String line = br.readLine(), cable, elemento, ipid, identificacion, uso;
-            line = br.readLine();
-            while (line != null) {
-                String[] fields = line.split(";");                
-                /**
-                 * EL VALOR DEL Nº SUC ES cell = fields[0] EL VALOR DEL MIGA ES
-                 * cell = fields[1] EL VALOR DEL ESTADO ES cell = fields[5] EL
-                 * VALOR DEL IDENTIFICADOR ES cell = fields[7] EL VALOR DEL USO
-                 * ES cell = fields[10] EL VALOR DEL CABLE ES cell = fields[11]
-                 * EL VALOR DEL ELEMENTO PASIVO ES cell = fields[12] EL VALOR
-                 * DEL IPID_ID ES cell = fields[13]
-                 */
-                cable = "S/N"; elemento = "S/N"; ipid = "S/N" ; identificacion = "S/N"; uso = "S/N";
-                //Registro(String numero_SUC, String miga, String estado, String identificador, String uso, String cable, String elementoPasivo, String ipid_id)
-                if (csvFile.contains("W49")) {
-                    identificacion = fields[9];
-                    uso = fields[10];
-                    switch (fields.length) {
-                        case 14:
-                            cable = fields[11];
-                            elemento = fields[12];
-                            ipid = fields[13];
-                            break;
-                        case 13:
-                            cable = fields[11];
-                            elemento = fields[12];
-                            break;
-                        case 12:
-                            cable = fields[11];
-                            break;
-                        default:
-                            break;
-                    }
-                }else{
-                    //System.out.println("leemos fila " + (numFila++) + " El tamaño de la actual es " + fields.length);
-                    //System.out.println("Añadimos de actual");
-                    //System.out.println("Tamaño encontrado: " + fields.length);
-                    switch (fields.length) {
-                        case 16:
-                            /**
-                             * CUENTA CON TODOS LOS DATOS
-                             */
-                            uso = fields[10];
-                            identificacion = fields[9];
-                            cable = fields[11];
-                            elemento = fields[14];
-                            ipid = fields[15];
-                            break;
-                        case 12:
-                             //SIN ID NI ELEMENTO PASIVO
-                            uso = fields[10];
-                            identificacion = fields[9];
-                            cable = fields[11];
-                            
-                            break;
-                        case 11:    
-                             //SIN ID NI ELEMENTO PASIVO, SIN CABLE, SIN ID, SIN IDENTIFICACIÓN
-                            uso = fields[9];
-                            break;
-                        default:
-                            break;
-                    }
-                    ++REG;
-                }                
-                Registro newReg = new Registro(fields[0], fields[1], fields[5], identificacion, uso, cable, elemento, ipid);
-                
-                if(fields.length >= 11){
-                    registros.add(newReg);
-                    numFila++;
-                }
-                line = br.readLine();
-            }            
-        } catch (IOException e) {
-            System.out.println("Ha surgido un error: " + e.getMessage() + ". En la fila " + numFila);
-        } finally {
-            if (null != br) {
-                try {
-                    br.close();
-                } catch (IOException ex) {
-                    System.out.println("Ha surgido un error: " + ex.getMessage() + ". En la fila " + numFila);
-                }
-            }
-        } 
-        System.out.println("Se han introducido un total de " + numFila + " en el robot " + csvFile);
-        return registros;
-    }
-    
+       
     /***
      * Devuelve los nº de suc que estén relacionados entre los dos registros pasados por parámetros
      * @param SUCSregistro1 Serán los números de sucs donde interviene el registro 1
      * @param SUCSregistro2 Serán los números de sucs donde interviene el registro 2
      * @return 
+     * @throws Exceptions.NoRelationshipException 
      */
-    public static ArrayList<String> getSUCRelationship(ArrayList<String> SUCSregistro1, ArrayList<String> SUCSregistro2) throws Exception {
+    public static ArrayList<String> getSUCRelationship(ArrayList<String> SUCSregistro1, ArrayList<String> SUCSregistro2) throws NoRelationshipException {
         ArrayList<String> solve = new ArrayList<>();
         String[] lineaSUC1 = null;
         String[] lineaSUC2 = null;
@@ -136,6 +37,9 @@ public final class RegistroApplication {
             }
         }
 
+        /**
+         * ELIMINAMOS LOS Nº DE SUCS QUE PUEDAN ESTAR REPETIDOS, CONSIDERAREMOS REPETIDO SI NºSUC Y ESTADOS SON LOS MISMOS EN LA BUSQUEDA DE LA RELACIÓN.
+         */
         if (solve.size() > 0) {
             ArrayList<String> copy = new ArrayList<>(solve);
             int index = 0;
@@ -159,7 +63,7 @@ public final class RegistroApplication {
                 indexCopy = index + 1;
             }
 
-        }else throw new Exception("No existe relación entre registros. ");
+        }else throw new NoRelationshipException();
         
         return solve;
     }
@@ -172,7 +76,7 @@ public final class RegistroApplication {
      * @return 
      */
     public static ArrayList<String> getSUCS(ArrayList<Registro> registros, String idRegistro, String miga){
-        ArrayList<String> solve = new ArrayList<>(); //DEVUELVE STRINGS DE ESTE TIPO: 957XXXXX + ESTADO_SUC
+        ArrayList<String> solve = new ArrayList<>(); //DEVUELVE STRINGS DE ESTE TIPO: 957XXXXX + ESTADO_SUC + CABLES
         int cableIndex;
         for (int i = 0; i < registros.size(); i++) {
             if(registros.get(i).getMiga().equals(miga) && registros.get(i).getIPIDID().equals(idRegistro)){
@@ -206,26 +110,7 @@ public final class RegistroApplication {
         }
         return false;
     }
-    
-    
-    /**
-     * Devolverá un arraylist con todos los registros encontrados en ambos ficheros, eliminando los registros duplicados que pueda haber en los dos ficheros.
-     * @return 
-     */
-    public static ArrayList<Registro> readCSVData() {
-        //PREVIAMENTE, LEEMOS EL FICHERO W49, DESPUES, INTRODUCIREMOS TANTOS REGISTROS DE ACTUAL COMO PODAMOS.
-        ArrayList<Registro> registrosW49 = readCSVData("Files//Robot_Tesa_W49.csv");
-        //System.out.println("Aniadimos " + registrosW49.size() + " registros de W49");
-        ArrayList<Registro> registrosWAct = readCSVData("Files//actual.csv");
-        //System.out.println("Aniadimos " + registrosWAct.size() + " registros de ACTUAL");
-        ArrayList<Registro> registros = new ArrayList<>();
-        registros.addAll(registrosW49);
-        registros.addAll(registrosWAct);
-        //System.out.println("En total " + registros.size() + " registros de las dos semanas.");
-       
-        return registros;
-    }
-    
+      
     /**
      * Devolverá el registro de la lista que tenga el ID y el miga indicado por parámetros
      * @param registros

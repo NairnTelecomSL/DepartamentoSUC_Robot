@@ -5,16 +5,20 @@
  */
 package AppInterface;
 
-import ClassApplication.RegistroApplication;
+import ClassApplication.FileReader;
+import Exceptions.NoFilesException;
+import java.awt.Desktop;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Álvaro Rofa Aranda
  */
 public class MainWindow extends javax.swing.JFrame {
-    
     
     public MainWindow() {
         initComponents();        
@@ -37,31 +41,19 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        robotwActualActivateButton = new javax.swing.JButton();
-        robotw49ActivateButton = new javax.swing.JButton();
         robotGeneralActivateButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        menuRobotW49 = new javax.swing.JMenuItem();
+        menuRobotWAct = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Nairn Telecom S.L - Robot");
         setIconImage(getIconImage());
         setResizable(false);
-
-        robotwActualActivateButton.setFont(new java.awt.Font("Copperplate Gothic Light", 2, 10)); // NOI18N
-        robotwActualActivateButton.setText("ROBOT 2021 WActual");
-        robotwActualActivateButton.setActionCommand("ROBOT 202WActual");
-        robotwActualActivateButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                robotwActualActivateButtonActionPerformed(evt);
-            }
-        });
-
-        robotw49ActivateButton.setFont(new java.awt.Font("Copperplate Gothic Light", 2, 10)); // NOI18N
-        robotw49ActivateButton.setText("ROBOT 2020 W49");
-        robotw49ActivateButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                robotw49ActivateButtonActionPerformed(evt);
-            }
-        });
 
         robotGeneralActivateButton.setFont(new java.awt.Font("Copperplate Gothic Light", 2, 10)); // NOI18N
         robotGeneralActivateButton.setText("Fichero General");
@@ -73,49 +65,100 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Consolas", 2, 10)); // NOI18N
+        jLabel1.setText("Desarrollado por Álvaro Rofa Aranda");
+
+        jMenu1.setText("Archivos");
+
+        menuRobotW49.setText("Robot 2020 W49");
+        menuRobotW49.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuRobotW49ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuRobotW49);
+
+        menuRobotWAct.setText("Robot 2020 Actual");
+        menuRobotWAct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuRobotWActActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuRobotWAct);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Ayuda");
+
+        jMenuItem1.setText("Manual SUCs Orange");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(robotw49ActivateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(robotwActualActivateButton)
-                .addContainerGap())
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addComponent(robotGeneralActivateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(100, 100, 100))
+                .addContainerGap(105, Short.MAX_VALUE)
+                .addComponent(robotGeneralActivateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(101, 101, 101))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(robotwActualActivateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(robotw49ActivateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(robotGeneralActivateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addGap(48, 48, 48)
+                .addComponent(robotGeneralActivateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                .addComponent(jLabel1))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void robotw49ActivateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_robotw49ActivateButtonActionPerformed
-        new RobotWindow(RegistroApplication.readCSVData("Files//Robot_Tesa_W49.csv") , "ROBOT_20W49").setVisible(true);
-    }//GEN-LAST:event_robotw49ActivateButtonActionPerformed
-
-    private void robotwActualActivateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_robotwActualActivateButtonActionPerformed
-        new RobotWindow(RegistroApplication.readCSVData("Files//actual.csv") , "ROBOT 21_WACTUAL").setVisible(true);
-    }//GEN-LAST:event_robotwActualActivateButtonActionPerformed
-
     private void robotGeneralActivateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_robotGeneralActivateButtonActionPerformed
-        new RobotWindow(RegistroApplication.readCSVData() , "ROBOT GENERAL").setVisible(true);
+        try {
+            new RobotWindow(FileReader.readCSVData() , "ROBOT GENERAL").setVisible(true);
+        } catch (NoFilesException ex) {
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error: Ficheros Generales" , 0);
+        }
     }//GEN-LAST:event_robotGeneralActivateButtonActionPerformed
 
-    
+    private void menuRobotW49ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRobotW49ActionPerformed
+        try {
+            new RobotWindow(FileReader.readCSVData("Files//Robot_Tesa_W49.csv") , "ROBOT_20W49").setVisible(true);
+        } catch (NoFilesException ex) {
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error: Fichero W49" , 0);
+        }
+    }//GEN-LAST:event_menuRobotW49ActionPerformed
+
+    private void menuRobotWActActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRobotWActActionPerformed
+        try {
+            new RobotWindow(FileReader.readCSVData("Files//actual.csv") , "ROBOT 21_WACTUAL").setVisible(true);
+        } catch (NoFilesException ex) {
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error: Fichero Act2021" , 0);
+        } 
+    }//GEN-LAST:event_menuRobotWActActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        try {
+            File objetofile = new File("Files//Manual//SUCRD.pdf");
+            Desktop.getDesktop().open(objetofile);
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -126,8 +169,13 @@ public class MainWindow extends javax.swing.JFrame {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem menuRobotW49;
+    private javax.swing.JMenuItem menuRobotWAct;
     private javax.swing.JButton robotGeneralActivateButton;
-    private javax.swing.JButton robotw49ActivateButton;
-    private javax.swing.JButton robotwActualActivateButton;
     // End of variables declaration//GEN-END:variables
 }
