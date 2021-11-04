@@ -10,9 +10,7 @@ import ClassApplication.RegistroApplication;
 import DataClass.Registro;
 import Exceptions.NoFilesException;
 import Exceptions.NoRelationshipException;
-import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.ArrayList;
@@ -29,26 +27,15 @@ public class Esquema2RWindow extends javax.swing.JFrame {
     
     public Esquema2RWindow(ArrayList<Registro> registros, String robotName) {
         initComponents();
-        this.jPanel1.setVisible(true);
         this.registros = registros;
         this.initialiceFilter();
         this.setTitle("Generador de Tramo - " + robotName);
     }
     
     @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        g.setColor(Color.BLACK);
-        g.fillRect(130, 118, 3, 112);
-        //drawLine(x1,y1,x2,y2)
-        //donde x1 e y1 son los puntos de inicio de dibujado.
-        //x2 e y2 son la coordenada donde finaliza la linea.
-    }
-
-    @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
-                getImage(ClassLoader.getSystemResource("Images/robot.png"));
+                getImage(ClassLoader.getSystemResource("Images/nairn.png"));
         return retValue;
     }
     @SuppressWarnings("unchecked")
@@ -58,7 +45,6 @@ public class Esquema2RWindow extends javax.swing.JFrame {
         reg2Label = new javax.swing.JTextField();
         reg1Label = new javax.swing.JTextField();
         generateButton = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
         migaLabel = new javax.swing.JTextField();
         limpiaFiltroButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -88,19 +74,6 @@ public class Esquema2RWindow extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setEnabled(false);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 13, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 13, Short.MAX_VALUE)
-        );
-
         migaLabel.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         migaLabel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         migaLabel.setText("MIGA");
@@ -126,9 +99,6 @@ public class Esquema2RWindow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,8 +120,7 @@ public class Esquema2RWindow extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13)
+                .addGap(26, 26, 26)
                 .addComponent(reg1Label, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
                 .addComponent(reg2Label, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -223,7 +192,6 @@ public class Esquema2RWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton generateButton;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton limpiaFiltroButton;
     private javax.swing.JTextField migaLabel;
