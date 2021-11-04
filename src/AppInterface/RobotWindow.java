@@ -7,6 +7,16 @@ package AppInterface;
 
 import ClassApplication.FileReader;
 import DataClass.Registro;
+import Exceptions.NoFilesException;
+import com.jtattoo.plaf.acryl.AcrylLookAndFeel;
+import com.jtattoo.plaf.aero.AeroLookAndFeel;
+import com.jtattoo.plaf.aluminium.AluminiumLookAndFeel;
+import com.jtattoo.plaf.bernstein.BernsteinLookAndFeel;
+import com.jtattoo.plaf.hifi.HiFiLookAndFeel;
+import com.jtattoo.plaf.luna.LunaLookAndFeel;
+import com.jtattoo.plaf.mcwin.McWinLookAndFeel;
+import com.jtattoo.plaf.texture.TextureLookAndFeel;
+import com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
@@ -15,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -31,7 +43,7 @@ public class RobotWindow extends javax.swing.JFrame {
     
     //VARIABLES USO DE DATOS
     private final ArrayList<Registro> registros;
-    private String robotName;
+    private final String robotName;
     
     //VARIABLES DE DISEÑO
     DefaultTableModel modeloRobot = new DefaultTableModel() {
@@ -43,7 +55,7 @@ public class RobotWindow extends javax.swing.JFrame {
     @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
-                getImage(ClassLoader.getSystemResource("Images/robot.png"));
+                getImage(ClassLoader.getSystemResource("Images/nairn.png"));
         return retValue;
     }
     public RobotWindow(ArrayList<Registro> data, String robotName) {
@@ -51,7 +63,6 @@ public class RobotWindow extends javax.swing.JFrame {
         setResizable(false);
         this.drawTableRobot();
         this.registros = data;
-        this.robotText.setText(this.robotName);
         this.drawDataRegistros(this.registros);
         this.robotName = robotName;
         this.setTitle(this.robotName);
@@ -93,8 +104,8 @@ public class RobotWindow extends javax.swing.JFrame {
             modeloRobot.addRow(columna);
         }        
     }
-    
-    public void activateFilter(javax.swing.JTextField textField){
+
+    public void activateFilter(javax.swing.JTextField textField) {
         textField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent ke) {
@@ -121,7 +132,15 @@ public class RobotWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenu1 = new javax.swing.JMenu();
-        robotText = new javax.swing.JLabel();
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenu3 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuBar3 = new javax.swing.JMenuBar();
+        jMenu5 = new javax.swing.JMenu();
+        jMenu6 = new javax.swing.JMenu();
+        jMenuBar4 = new javax.swing.JMenuBar();
+        jMenu7 = new javax.swing.JMenu();
+        jMenu8 = new javax.swing.JMenu();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaDocAc = new javax.swing.JTable();
         migaFilter = new javax.swing.JTextField();
@@ -135,8 +154,35 @@ public class RobotWindow extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         buscarCablesButton = new javax.swing.JMenuItem();
+        aparienciaMenu = new javax.swing.JMenu();
+        aluminioButton = new javax.swing.JMenuItem();
+        blaquiazulButton = new javax.swing.JMenuItem();
+        amarilloButton = new javax.swing.JMenuItem();
+        blackButton = new javax.swing.JMenuItem();
+        windowsclassicButton = new javax.swing.JMenuItem();
+        textureButton = new javax.swing.JMenuItem();
+        minimalistaButton = new javax.swing.JMenuItem();
+        defaultButton = new javax.swing.JMenuItem();
 
         jMenu1.setText("jMenu1");
+
+        jMenu3.setText("File");
+        jMenuBar2.add(jMenu3);
+
+        jMenu4.setText("Edit");
+        jMenuBar2.add(jMenu4);
+
+        jMenu5.setText("File");
+        jMenuBar3.add(jMenu5);
+
+        jMenu6.setText("Edit");
+        jMenuBar3.add(jMenu6);
+
+        jMenu7.setText("File");
+        jMenuBar4.add(jMenu7);
+
+        jMenu8.setText("Edit");
+        jMenuBar4.add(jMenu8);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(224, 255, 255));
@@ -146,11 +192,6 @@ public class RobotWindow extends javax.swing.JFrame {
                 formWindowClosed(evt);
             }
         });
-
-        robotText.setFont(new java.awt.Font("Consolas", 1, 14)); // NOI18N
-        robotText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        robotText.setText("AQUI IRÁ REFLEJADO EL ROBOT QUE SE MUESTRA EN LA TABLA DE ABAJO");
-        robotText.setToolTipText("");
 
         tablaDocAc.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -165,7 +206,7 @@ public class RobotWindow extends javax.swing.JFrame {
         ));
         tablaDocAc.setToolTipText("");
         tablaDocAc.setColumnSelectionAllowed(true);
-        tablaDocAc.setSelectionBackground(new java.awt.Color(51, 255, 51));
+        tablaDocAc.setSelectionBackground(new java.awt.Color(51, 153, 255));
         jScrollPane1.setViewportView(tablaDocAc);
 
         migaFilter.addActionListener(new java.awt.event.ActionListener() {
@@ -207,7 +248,7 @@ public class RobotWindow extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Consolas", 2, 10)); // NOI18N
         jLabel1.setText("Desarrollado por Álvaro Rofa Aranda");
 
-        jMenu2.setBorder(new javax.swing.border.MatteBorder(null));
+        jMenu2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jMenu2.setText("Acciones");
 
         buscarCablesButton.setText("Buscar cables entre registros");
@@ -220,6 +261,75 @@ public class RobotWindow extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        aparienciaMenu.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        aparienciaMenu.setText("Apariencia");
+
+        aluminioButton.setText("Aluminio");
+        aluminioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aluminioButtonActionPerformed(evt);
+            }
+        });
+        aparienciaMenu.add(aluminioButton);
+
+        blaquiazulButton.setText("Blanquiazul");
+        blaquiazulButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                blaquiazulButtonActionPerformed(evt);
+            }
+        });
+        aparienciaMenu.add(blaquiazulButton);
+
+        amarilloButton.setText("Amarillo");
+        amarilloButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                amarilloButtonActionPerformed(evt);
+            }
+        });
+        aparienciaMenu.add(amarilloButton);
+
+        blackButton.setText("Black Noir");
+        blackButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                blackButtonActionPerformed(evt);
+            }
+        });
+        aparienciaMenu.add(blackButton);
+
+        windowsclassicButton.setText("Window Vista Classic");
+        windowsclassicButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                windowsclassicButtonActionPerformed(evt);
+            }
+        });
+        aparienciaMenu.add(windowsclassicButton);
+
+        textureButton.setText("Texturizado");
+        textureButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textureButtonActionPerformed(evt);
+            }
+        });
+        aparienciaMenu.add(textureButton);
+
+        minimalistaButton.setText("Minimalista clásico");
+        minimalistaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                minimalistaButtonActionPerformed(evt);
+            }
+        });
+        aparienciaMenu.add(minimalistaButton);
+
+        defaultButton.setText("Por defecto");
+        defaultButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                defaultButtonActionPerformed(evt);
+            }
+        });
+        aparienciaMenu.add(defaultButton);
+
+        jMenuBar1.add(aparienciaMenu);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -230,11 +340,7 @@ public class RobotWindow extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(robotText))
-                            .addComponent(jScrollPane1)))
+                        .addComponent(jScrollPane1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -263,9 +369,7 @@ public class RobotWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(robotText)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(migaFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -284,6 +388,7 @@ public class RobotWindow extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void migaFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_migaFilterActionPerformed
@@ -309,6 +414,38 @@ public class RobotWindow extends javax.swing.JFrame {
     private void buscarCablesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarCablesButtonActionPerformed
         new Esquema2RWindow(registros, this.robotName).setVisible(true);
     }//GEN-LAST:event_buscarCablesButtonActionPerformed
+
+    private void aluminioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aluminioButtonActionPerformed
+        this.establecerVista(1);
+    }//GEN-LAST:event_aluminioButtonActionPerformed
+
+    private void blaquiazulButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blaquiazulButtonActionPerformed
+        this.establecerVista(2);
+    }//GEN-LAST:event_blaquiazulButtonActionPerformed
+
+    private void amarilloButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_amarilloButtonActionPerformed
+        this.establecerVista(3);
+    }//GEN-LAST:event_amarilloButtonActionPerformed
+
+    private void blackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blackButtonActionPerformed
+        this.establecerVista(4);
+    }//GEN-LAST:event_blackButtonActionPerformed
+
+    private void windowsclassicButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_windowsclassicButtonActionPerformed
+        this.establecerVista(5);
+    }//GEN-LAST:event_windowsclassicButtonActionPerformed
+
+    private void textureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textureButtonActionPerformed
+        this.establecerVista(7);
+    }//GEN-LAST:event_textureButtonActionPerformed
+
+    private void minimalistaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minimalistaButtonActionPerformed
+        this.establecerVista(8);
+    }//GEN-LAST:event_minimalistaButtonActionPerformed
+
+    private void defaultButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultButtonActionPerformed
+        this.establecerVista(6);
+    }//GEN-LAST:event_defaultButtonActionPerformed
     
     private void resetFilter(){
         idFilter.setText(null);
@@ -317,6 +454,44 @@ public class RobotWindow extends javax.swing.JFrame {
         filterList = null;
         rowFilter = null;
     }
+    
+    private void establecerVista(int n){
+        try
+        {
+            switch(n)
+            {
+                case 1:
+                    UIManager.setLookAndFeel(new AluminiumLookAndFeel()); // ALUMINIO
+                    break;
+                case 2:
+                    UIManager.setLookAndFeel(new AeroLookAndFeel()); // BLANQUIAZUL
+                    break;
+                case 3:
+                    UIManager.setLookAndFeel(new BernsteinLookAndFeel()); // AMARILLO
+                    break;                
+                case 4:
+                    UIManager.setLookAndFeel(new HiFiLookAndFeel()); //BLACK
+                    break;        
+                case 5:
+                    UIManager.setLookAndFeel(new LunaLookAndFeel()); //CLASSIC WINDOWS VISTA
+                    break;   
+                case 6:
+                    UIManager.setLookAndFeel(new McWinLookAndFeel()); //PONER COMO VISTA PRINCIPAL
+                    break;      
+                case 7:
+                    UIManager.setLookAndFeel(new TextureLookAndFeel()); // TEXTURIZADO
+                    break;
+                case 8:
+                    UIManager.setLookAndFeel(new WindowsClassicLookAndFeel()); // MINIMALISTA CLASICO
+                    break;
+            }
+        } catch (UnsupportedLookAndFeelException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dispose();
+            new RobotWindow(registros, robotName).setVisible(true);
+        }
+    }
      
         public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -324,7 +499,7 @@ public class RobotWindow extends javax.swing.JFrame {
             public void run() {
                 try {
                     new RobotWindow(FileReader.readCSVData("Files//Robot_Tesa_W49.csv") , "ROBOT_RUN").setVisible(true);
-                } catch (Exception ex) {
+                } catch (NoFilesException ex) {
                     JOptionPane.showMessageDialog(null,ex.getMessage(), "Error: Fichero" , 0);
                 }
             }
@@ -333,7 +508,13 @@ public class RobotWindow extends javax.swing.JFrame {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem aluminioButton;
+    private javax.swing.JMenuItem amarilloButton;
+    private javax.swing.JMenu aparienciaMenu;
+    private javax.swing.JMenuItem blackButton;
+    private javax.swing.JMenuItem blaquiazulButton;
     private javax.swing.JMenuItem buscarCablesButton;
+    private javax.swing.JMenuItem defaultButton;
     private javax.swing.JTextField idFilter;
     private javax.swing.JTextField identificacionFilter;
     private javax.swing.JLabel jLabel1;
@@ -342,11 +523,22 @@ public class RobotWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelmiga;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JMenuBar jMenuBar3;
+    private javax.swing.JMenuBar jMenuBar4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField migaFilter;
+    private javax.swing.JMenuItem minimalistaButton;
     private javax.swing.JButton resetFilterButton1;
-    private javax.swing.JLabel robotText;
     private javax.swing.JTable tablaDocAc;
+    private javax.swing.JMenuItem textureButton;
+    private javax.swing.JMenuItem windowsclassicButton;
     // End of variables declaration//GEN-END:variables
 }
