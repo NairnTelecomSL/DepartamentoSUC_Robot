@@ -32,10 +32,18 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuRobotWAct">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Robot 2020 Actual"/>
+                <Property name="text" type="java.lang.String" value="Robot 2021 Actual"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuRobotWActActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuTesaMiga">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="CTs Tesa Miga"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuTesaMigaActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -161,13 +169,15 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jlbToday" pref="145" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="105" max="32767" attributes="0"/>
-              <Component id="robotGeneralActivateButton" min="-2" pref="151" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="101" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="robotGeneralActivateButton" min="-2" pref="153" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="115" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -176,8 +186,11 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
               <Component id="robotGeneralActivateButton" min="-2" pref="67" max="-2" attributes="0"/>
-              <EmptySpace pref="63" max="32767" attributes="0"/>
-              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="62" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jlbToday" alignment="3" min="-2" pref="13" max="-2" attributes="0"/>
+              </Group>
           </Group>
       </Group>
     </DimensionLayout>
@@ -205,6 +218,14 @@
           <Font name="Consolas" size="10" style="2"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Desarrollado por &#xc1;lvaro Rofa Aranda"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jlbToday">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Consolas" size="10" style="2"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="FECHA DE HOY"/>
       </Properties>
     </Component>
   </SubComponents>

@@ -1,0 +1,536 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package AppInterface;
+
+import ClassApplication.FilesReader;
+import ClassApplication.RegistroApplication;
+import Constantes.ConstData;
+import DataClass.Centrales;
+import DataClass.Registro;
+import Exceptions.NoFilesException;
+import com.jtattoo.plaf.aero.AeroLookAndFeel;
+import com.jtattoo.plaf.aluminium.AluminiumLookAndFeel;
+import com.jtattoo.plaf.bernstein.BernsteinLookAndFeel;
+import com.jtattoo.plaf.hifi.HiFiLookAndFeel;
+import com.jtattoo.plaf.luna.LunaLookAndFeel;
+import com.jtattoo.plaf.mcwin.McWinLookAndFeel;
+import com.jtattoo.plaf.texture.TextureLookAndFeel;
+import com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
+/**
+ *
+ * @author Álvaro Rofa Aranda
+ */
+public class CentralesWindow extends javax.swing.JFrame {
+
+    //VARIABLES DE FILTRO
+    private TableRowSorter trs;
+    private List<RowFilter<Object, Object>> filterList;
+    private RowFilter<Object, Object> rowFilter;
+    
+    //VARIABLES USO DE DATOS
+    private final ArrayList<Centrales> centrales;
+    
+    //VARIABLES DE DISEÑO
+    DefaultTableModel modeloCT = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };    
+    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+
+    
+    
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().
+                getImage(ClassLoader.getSystemResource("Images/nairn.png"));
+        return retValue;
+    }
+    
+    
+    
+    
+    public CentralesWindow(ArrayList<Centrales> data) {
+        initComponents();
+        setResizable(false);
+        this.drawTableRobot();
+        this.centrales = data;
+        this.drawDataRegistros(this.centrales);
+        this.defaultConfigTable();
+        this.setTitle("CTs TESA MIGA");
+    }
+
+    private void drawTableRobot() {
+        jtbtablaCentrales.setModel(modeloCT);
+        String[] columnasTabla = {"Población", "Miga", "NombreCT", "PROVMUN", "Nombre"};
+        modeloCT.setColumnIdentifiers(columnasTabla);
+
+        // Para no permitir el redimensionamiento de las columnas con el ratón
+        jtbtablaCentrales.getTableHeader().setResizingAllowed(true);
+
+        // Así se fija el ancho de las columnas
+        jtbtablaCentrales.getColumnModel().getColumn(0).setPreferredWidth(80);  
+        jtbtablaCentrales.getColumnModel().getColumn(1).setPreferredWidth(20);   
+        jtbtablaCentrales.getColumnModel().getColumn(2).setPreferredWidth(80);  
+        jtbtablaCentrales.getColumnModel().getColumn(3).setPreferredWidth(20);  
+        jtbtablaCentrales.getColumnModel().getColumn(4).setPreferredWidth(120);   
+        //AQUI DIBUJAREMOS AUTOMÁTICAMENTE TODOS LOS TÉCNICOS
+    }    
+    
+    private void drawDataRegistros(ArrayList<Centrales> centrales) {    
+        Object[] columna = new Object[8];  
+        int numRegistros = centrales.size();
+        System.out.println(numRegistros);
+        for (int i = 0; i < numRegistros; i++) {
+            columna[0] = centrales.get(i).getPoblacion();
+            columna[1] = centrales.get(i).getMiga();
+            columna[2] = centrales.get(i).getNombreCT();
+            columna[3] = centrales.get(i).getProvMun();
+            columna[4] = centrales.get(i).getNombre();
+            modeloCT.addRow(columna);
+        }        
+    }
+
+    public void activateFilter(javax.swing.JTextField textField) {
+        textField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent ke) {
+                filterList = new ArrayList<>(3);
+                filterList.add(RowFilter.regexFilter(migaFilter.getText().toUpperCase(), 1));           
+                filterList.add(RowFilter.regexFilter(filtroPoblacion.getText().toUpperCase(), 0));             
+                filterList.add(RowFilter.regexFilter(filtroNombreCT.getText().toUpperCase(), 2)); 
+                rowFilter = RowFilter.andFilter(filterList);
+                trs.setRowFilter(rowFilter);
+            }
+        }
+        );
+        trs = new TableRowSorter(modeloCT);
+        jtbtablaCentrales.setRowSorter(trs);
+    }
+    
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jMenu1 = new javax.swing.JMenu();
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenu3 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuBar3 = new javax.swing.JMenuBar();
+        jMenu5 = new javax.swing.JMenu();
+        jMenu6 = new javax.swing.JMenu();
+        jMenuBar4 = new javax.swing.JMenuBar();
+        jMenu7 = new javax.swing.JMenu();
+        jMenu8 = new javax.swing.JMenu();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtbtablaCentrales = new javax.swing.JTable();
+        migaFilter = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        filtroPoblacion = new javax.swing.JTextField();
+        resetFilterButton1 = new javax.swing.JButton();
+        filtroNombreCT = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabelmiga = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        aparienciaMenu = new javax.swing.JMenu();
+        aluminioButton = new javax.swing.JMenuItem();
+        blaquiazulButton = new javax.swing.JMenuItem();
+        amarilloButton = new javax.swing.JMenuItem();
+        blackButton = new javax.swing.JMenuItem();
+        windowsclassicButton = new javax.swing.JMenuItem();
+        textureButton = new javax.swing.JMenuItem();
+        minimalistaButton = new javax.swing.JMenuItem();
+        defaultButton = new javax.swing.JMenuItem();
+
+        jMenu1.setText("jMenu1");
+
+        jMenu3.setText("File");
+        jMenuBar2.add(jMenu3);
+
+        jMenu4.setText("Edit");
+        jMenuBar2.add(jMenu4);
+
+        jMenu5.setText("File");
+        jMenuBar3.add(jMenu5);
+
+        jMenu6.setText("Edit");
+        jMenuBar3.add(jMenu6);
+
+        jMenu7.setText("File");
+        jMenuBar4.add(jMenu7);
+
+        jMenu8.setText("Edit");
+        jMenuBar4.add(jMenu8);
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(224, 255, 255));
+        setIconImage(getIconImage());
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
+
+        jtbtablaCentrales.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        jtbtablaCentrales.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jtbtablaCentrales.setToolTipText("");
+        jtbtablaCentrales.setAutoscrolls(false);
+        jtbtablaCentrales.setColumnSelectionAllowed(true);
+        jtbtablaCentrales.setSelectionBackground(new java.awt.Color(51, 153, 255));
+        jScrollPane1.setViewportView(jtbtablaCentrales);
+
+        migaFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                migaFilterActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel4.setText("Filtrar Población");
+
+        filtroPoblacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filtroPoblacionActionPerformed(evt);
+            }
+        });
+
+        resetFilterButton1.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        resetFilterButton1.setText("Eliminar filtros");
+        resetFilterButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetFilterButton1ActionPerformed(evt);
+            }
+        });
+
+        filtroNombreCT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filtroNombreCTActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel5.setText("Filtrar Nombre CT:");
+        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
+
+        jLabelmiga.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        jLabelmiga.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabelmiga.setText("Filtrar Miga: ");
+
+        jLabel1.setFont(new java.awt.Font("Consolas", 2, 10)); // NOI18N
+        jLabel1.setText("Desarrollado por Álvaro Rofa Aranda");
+
+        aparienciaMenu.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        aparienciaMenu.setText("Apariencia");
+
+        aluminioButton.setText("Aluminio");
+        aluminioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aluminioButtonActionPerformed(evt);
+            }
+        });
+        aparienciaMenu.add(aluminioButton);
+
+        blaquiazulButton.setText("Blanquiazul");
+        blaquiazulButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                blaquiazulButtonActionPerformed(evt);
+            }
+        });
+        aparienciaMenu.add(blaquiazulButton);
+
+        amarilloButton.setText("Amarillo");
+        amarilloButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                amarilloButtonActionPerformed(evt);
+            }
+        });
+        aparienciaMenu.add(amarilloButton);
+
+        blackButton.setText("Black Noir");
+        blackButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                blackButtonActionPerformed(evt);
+            }
+        });
+        aparienciaMenu.add(blackButton);
+
+        windowsclassicButton.setText("Window Vista Classic");
+        windowsclassicButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                windowsclassicButtonActionPerformed(evt);
+            }
+        });
+        aparienciaMenu.add(windowsclassicButton);
+
+        textureButton.setText("Texturizado");
+        textureButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textureButtonActionPerformed(evt);
+            }
+        });
+        aparienciaMenu.add(textureButton);
+
+        minimalistaButton.setText("Minimalista clásico");
+        minimalistaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                minimalistaButtonActionPerformed(evt);
+            }
+        });
+        aparienciaMenu.add(minimalistaButton);
+
+        defaultButton.setText("Por defecto");
+        defaultButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                defaultButtonActionPerformed(evt);
+            }
+        });
+        aparienciaMenu.add(defaultButton);
+
+        jMenuBar1.add(aparienciaMenu);
+
+        setJMenuBar(jMenuBar1);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 845, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelmiga, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(filtroPoblacion, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(filtroNombreCT, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(29, 29, 29)
+                                        .addComponent(resetFilterButton1))
+                                    .addComponent(migaFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(248, 248, 248)
+                        .addComponent(jLabel1)))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelmiga, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(migaFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(filtroPoblacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(resetFilterButton1)
+                    .addComponent(filtroNombreCT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void migaFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_migaFilterActionPerformed
+        this.activateFilter(migaFilter);
+    }//GEN-LAST:event_migaFilterActionPerformed
+
+    private void filtroPoblacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtroPoblacionActionPerformed
+        this.activateFilter(filtroPoblacion);
+    }//GEN-LAST:event_filtroPoblacionActionPerformed
+
+    private void resetFilterButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetFilterButton1ActionPerformed
+        this.resetFilter();
+    }//GEN-LAST:event_resetFilterButton1ActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        this.dispose();
+    }//GEN-LAST:event_formWindowClosed
+
+    private void filtroNombreCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtroNombreCTActionPerformed
+        this.activateFilter(filtroNombreCT);
+    }//GEN-LAST:event_filtroNombreCTActionPerformed
+
+    private void aluminioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aluminioButtonActionPerformed
+        this.establecerVista(1);
+    }//GEN-LAST:event_aluminioButtonActionPerformed
+
+    private void blaquiazulButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blaquiazulButtonActionPerformed
+        this.establecerVista(2);
+    }//GEN-LAST:event_blaquiazulButtonActionPerformed
+
+    private void amarilloButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_amarilloButtonActionPerformed
+        this.establecerVista(3);
+    }//GEN-LAST:event_amarilloButtonActionPerformed
+
+    private void blackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blackButtonActionPerformed
+        this.establecerVista(4);
+    }//GEN-LAST:event_blackButtonActionPerformed
+
+    private void windowsclassicButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_windowsclassicButtonActionPerformed
+        this.establecerVista(5);
+    }//GEN-LAST:event_windowsclassicButtonActionPerformed
+
+    private void textureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textureButtonActionPerformed
+        this.establecerVista(7);
+    }//GEN-LAST:event_textureButtonActionPerformed
+
+    private void minimalistaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minimalistaButtonActionPerformed
+        this.establecerVista(8);
+    }//GEN-LAST:event_minimalistaButtonActionPerformed
+
+    private void defaultButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultButtonActionPerformed
+        this.establecerVista(6);
+    }//GEN-LAST:event_defaultButtonActionPerformed
+    
+    private void defaultConfigTable(){
+        jtbtablaCentrales.getTableHeader().setReorderingAllowed(false) ;
+        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        jtbtablaCentrales.getColumnModel().getColumn(ConstData.MIGA_POSITION_JTABLE).setCellRenderer(centerRenderer);
+        jtbtablaCentrales.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+    }
+    
+    private void resetFilter(){
+        filtroPoblacion.setText(null);
+        migaFilter.setText(null);
+        filtroNombreCT.setText(null);
+        filterList = null;
+        rowFilter = null;
+    }
+    
+    private void establecerVista(int n){
+        try
+        {
+            switch(n)
+            {
+                case 1:
+                    UIManager.setLookAndFeel(new AluminiumLookAndFeel()); // ALUMINIO
+                    break;
+                case 2:
+                    UIManager.setLookAndFeel(new AeroLookAndFeel()); // BLANQUIAZUL
+                    break;
+                case 3:
+                    UIManager.setLookAndFeel(new BernsteinLookAndFeel()); // AMARILLO
+                    break;                
+                case 4:
+                    UIManager.setLookAndFeel(new HiFiLookAndFeel()); //BLACK
+                    break;        
+                case 5:
+                    UIManager.setLookAndFeel(new LunaLookAndFeel()); //CLASSIC WINDOWS VISTA
+                    break;   
+                case 6:
+                    UIManager.setLookAndFeel(new McWinLookAndFeel()); //PONER COMO VISTA PRINCIPAL
+                    break;      
+                case 7:
+                    UIManager.setLookAndFeel(new TextureLookAndFeel()); // TEXTURIZADO
+                    break;
+                case 8:
+                    UIManager.setLookAndFeel(new WindowsClassicLookAndFeel()); // MINIMALISTA CLASICO
+                    break;
+            }
+        } catch (UnsupportedLookAndFeelException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dispose();
+            new CentralesWindow(centrales).setVisible(true);
+        }
+    }
+     
+        public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new CentralesWindow(FilesReader.readTesaMigaXLSX()).setVisible(true);
+            }
+        });
+    }
+    
+    
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem aluminioButton;
+    private javax.swing.JMenuItem amarilloButton;
+    private javax.swing.JMenu aparienciaMenu;
+    private javax.swing.JMenuItem blackButton;
+    private javax.swing.JMenuItem blaquiazulButton;
+    private javax.swing.JMenuItem defaultButton;
+    private javax.swing.JTextField filtroNombreCT;
+    private javax.swing.JTextField filtroPoblacion;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabelmiga;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JMenuBar jMenuBar3;
+    private javax.swing.JMenuBar jMenuBar4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jtbtablaCentrales;
+    private javax.swing.JTextField migaFilter;
+    private javax.swing.JMenuItem minimalistaButton;
+    private javax.swing.JButton resetFilterButton1;
+    private javax.swing.JMenuItem textureButton;
+    private javax.swing.JMenuItem windowsclassicButton;
+    // End of variables declaration//GEN-END:variables
+}

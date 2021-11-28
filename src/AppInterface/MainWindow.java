@@ -5,7 +5,10 @@
  */
 package AppInterface;
 
-import ClassApplication.FileReader;
+import ClassApplication.CalendarUse;
+import ClassApplication.FilesReader;
+import DataClass.DataFile;
+import Exceptions.FicherosException;
 import Exceptions.NoFilesException;
 import com.jtattoo.plaf.aero.AeroLookAndFeel;
 import com.jtattoo.plaf.aluminium.AluminiumLookAndFeel;
@@ -30,11 +33,16 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author Álvaro Rofa Aranda
  */
-public class MainWindow extends javax.swing.JFrame {
+public class MainWindow extends javax.swing.JFrame {    
+    private DataFile fileUses;
+    private final CalendarUse calendarUse;
     
     public MainWindow() {
-        initComponents();     
+        initComponents();   
+        calendarUse = new CalendarUse();
+        this.jlbToday.setText(calendarUse.getDate() + " - " + this.calendarUse.getDayOfTheWeek().toUpperCase());
         this.setResizable(false);
+        this.dateAlarm();
     }
 
     @Override
@@ -55,10 +63,12 @@ public class MainWindow extends javax.swing.JFrame {
 
         robotGeneralActivateButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jlbToday = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         archivosMenu = new javax.swing.JMenu();
         menuRobotW49 = new javax.swing.JMenuItem();
         menuRobotWAct = new javax.swing.JMenuItem();
+        menuTesaMiga = new javax.swing.JMenuItem();
         ayudaMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         aparienciaMenu = new javax.swing.JMenu();
@@ -90,6 +100,9 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Consolas", 2, 10)); // NOI18N
         jLabel1.setText("Desarrollado por Álvaro Rofa Aranda");
 
+        jlbToday.setFont(new java.awt.Font("Consolas", 2, 10)); // NOI18N
+        jlbToday.setText("FECHA DE HOY");
+
         jMenuBar1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jMenuBar1.setName(""); // NOI18N
 
@@ -104,13 +117,21 @@ public class MainWindow extends javax.swing.JFrame {
         });
         archivosMenu.add(menuRobotW49);
 
-        menuRobotWAct.setText("Robot 2020 Actual");
+        menuRobotWAct.setText("Robot 2021 Actual");
         menuRobotWAct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuRobotWActActionPerformed(evt);
             }
         });
         archivosMenu.add(menuRobotWAct);
+
+        menuTesaMiga.setText("CTs Tesa Miga");
+        menuTesaMiga.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuTesaMigaActionPerformed(evt);
+            }
+        });
+        archivosMenu.add(menuTesaMiga);
 
         jMenuBar1.add(archivosMenu);
 
@@ -195,20 +216,24 @@ public class MainWindow extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jlbToday, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(105, Short.MAX_VALUE)
-                .addComponent(robotGeneralActivateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(101, 101, 101))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(robotGeneralActivateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(115, 115, 115))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(48, 48, 48)
                 .addComponent(robotGeneralActivateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
-                .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jlbToday, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         pack();
@@ -217,24 +242,26 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void robotGeneralActivateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_robotGeneralActivateButtonActionPerformed
         try {
-            new RobotWindow(FileReader.readCSVData() , "ROBOT GENERAL").setVisible(true);
-        } catch (NoFilesException ex) {
+            new RobotWindow(FilesReader.readCSVData() , "ROBOT GENERAL").setVisible(true);
+        } catch (NoFilesException | FicherosException ex) {
             JOptionPane.showMessageDialog(null,ex.getMessage(), "Error: Ficheros Generales" , 0);
         }
     }//GEN-LAST:event_robotGeneralActivateButtonActionPerformed
 
     private void menuRobotW49ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRobotW49ActionPerformed
         try {
-            new RobotWindow(FileReader.readCSVData("Files//Robot_Tesa_W49.csv") , "ROBOT_20W49").setVisible(true);
-        } catch (NoFilesException ex) {
+            fileUses = new DataFile();
+            new RobotWindow(FilesReader.readCSVData(fileUses.getRobotW49Route()) , "Robot_Tesa_W49").setVisible(true);
+        } catch (NoFilesException | FicherosException ex) {
             JOptionPane.showMessageDialog(null,ex.getMessage(), "Error: Fichero W49" , 0);
         }
     }//GEN-LAST:event_menuRobotW49ActionPerformed
 
     private void menuRobotWActActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRobotWActActionPerformed
         try {
-            new RobotWindow(FileReader.readCSVData("Files//actual.csv") , "ROBOT 21_WACTUAL").setVisible(true);
-        } catch (NoFilesException ex) {
+            fileUses = new DataFile();
+            new RobotWindow(FilesReader.readCSVData(fileUses.getRobotWActRoute()) , "Robot_Tesa_2020_2021_WActual").setVisible(true);
+        } catch (NoFilesException | FicherosException ex) {
             JOptionPane.showMessageDialog(null,ex.getMessage(), "Error: Fichero Act2021" , 0);
         } 
     }//GEN-LAST:event_menuRobotWActActionPerformed
@@ -276,6 +303,10 @@ public class MainWindow extends javax.swing.JFrame {
         this.establecerVista(7);
     }//GEN-LAST:event_textureButtonActionPerformed
 
+    private void menuTesaMigaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuTesaMigaActionPerformed
+        new CentralesWindow(FilesReader.readTesaMigaXLSX()).setVisible(true);
+    }//GEN-LAST:event_menuTesaMigaActionPerformed
+
     private void establecerVista(int n){
         try
         {
@@ -314,6 +345,13 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }
        
+    private void dateAlarm(){      
+        if(calendarUse.getDayOfTheWeek().toUpperCase().equals("LUNES")){
+            JOptionPane.showMessageDialog(null,"¡¡Buenos dias!!, Hoy es lunes, recuerda actualizar el robot de esta semana.\nAñadelos en formato '.csv' en la carpeta Robot/Files.", 
+                    "Actualización Fichero Semanal" , 1);
+        }        
+    }
+    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
@@ -341,8 +379,10 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JLabel jlbToday;
     private javax.swing.JMenuItem menuRobotW49;
     private javax.swing.JMenuItem menuRobotWAct;
+    private javax.swing.JMenuItem menuTesaMiga;
     private javax.swing.JButton robotGeneralActivateButton;
     private javax.swing.JMenuItem textureButton;
     private javax.swing.JMenuItem windowsclassicButton;

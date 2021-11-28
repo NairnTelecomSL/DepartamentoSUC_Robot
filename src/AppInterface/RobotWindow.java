@@ -5,10 +5,11 @@
  */
 package AppInterface;
 
-import ClassApplication.FileReader;
+import ClassApplication.FilesReader;
+import ClassApplication.RegistroApplication;
+import Constantes.ConstData;
 import DataClass.Registro;
 import Exceptions.NoFilesException;
-import com.jtattoo.plaf.acryl.AcrylLookAndFeel;
 import com.jtattoo.plaf.aero.AeroLookAndFeel;
 import com.jtattoo.plaf.aluminium.AluminiumLookAndFeel;
 import com.jtattoo.plaf.bernstein.BernsteinLookAndFeel;
@@ -23,10 +24,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -44,6 +47,7 @@ public class RobotWindow extends javax.swing.JFrame {
     //VARIABLES USO DE DATOS
     private final ArrayList<Registro> registros;
     private final String robotName;
+    private RegistroApplication registroApplication;
     
     //VARIABLES DE DISEÑO
     DefaultTableModel modeloRobot = new DefaultTableModel() {
@@ -52,39 +56,49 @@ public class RobotWindow extends javax.swing.JFrame {
             return false;
         }
     };    
+    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+
+    
+    
     @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
                 getImage(ClassLoader.getSystemResource("Images/nairn.png"));
         return retValue;
     }
+    
+    
+    
+    
     public RobotWindow(ArrayList<Registro> data, String robotName) {
         initComponents();
         setResizable(false);
+        this.registroApplication = new RegistroApplication();
         this.drawTableRobot();
         this.registros = data;
         this.drawDataRegistros(this.registros);
         this.robotName = robotName;
+        this.defaultConfigTable();
         this.setTitle(this.robotName);
     }
 
     private void drawTableRobot() {
-        tablaDocAc.setModel(modeloRobot);
+        jtbtablaRobot.setModel(modeloRobot);
         String[] columnasTabla = {"NºSUC", "Miga", "Estado", "Identificador", "Uso", "Cable" , "Elemento Pasivo", "IPID_ID"};
         modeloRobot.setColumnIdentifiers(columnasTabla);
 
         // Para no permitir el redimensionamiento de las columnas con el ratón
-        tablaDocAc.getTableHeader().setResizingAllowed(true);
+        jtbtablaRobot.getTableHeader().setResizingAllowed(true);
 
         // Así se fija el ancho de las columnas
-        tablaDocAc.getColumnModel().getColumn(0).setPreferredWidth(155);  // numero_SUC
-        tablaDocAc.getColumnModel().getColumn(1).setPreferredWidth(60);   // miga
-        tablaDocAc.getColumnModel().getColumn(2).setPreferredWidth(100);  // estado
-        tablaDocAc.getColumnModel().getColumn(3).setPreferredWidth(180);  // identificador
-        tablaDocAc.getColumnModel().getColumn(4).setPreferredWidth(25);   // uso
-        tablaDocAc.getColumnModel().getColumn(5).setPreferredWidth(100);  // cable
-        tablaDocAc.getColumnModel().getColumn(6).setPreferredWidth(120);  // elementoPasivo
-        tablaDocAc.getColumnModel().getColumn(7).setPreferredWidth(60);   // ipid_id
+        jtbtablaRobot.getColumnModel().getColumn(0).setPreferredWidth(140);  // numero_SUC
+        jtbtablaRobot.getColumnModel().getColumn(1).setPreferredWidth(40);   // miga
+        jtbtablaRobot.getColumnModel().getColumn(2).setPreferredWidth(100);  // estado
+        jtbtablaRobot.getColumnModel().getColumn(3).setPreferredWidth(180);  // identificador
+        jtbtablaRobot.getColumnModel().getColumn(4).setPreferredWidth(15);   // uso
+        jtbtablaRobot.getColumnModel().getColumn(5).setPreferredWidth(100);  // cable
+        jtbtablaRobot.getColumnModel().getColumn(6).setPreferredWidth(120);  // elementoPasivo
+        jtbtablaRobot.getColumnModel().getColumn(7).setPreferredWidth(40);   // ipid_id
         //AQUI DIBUJAREMOS AUTOMÁTICAMENTE TODOS LOS TÉCNICOS
     }    
     
@@ -119,7 +133,7 @@ public class RobotWindow extends javax.swing.JFrame {
         }
         );
         trs = new TableRowSorter(modeloRobot);
-        tablaDocAc.setRowSorter(trs);
+        jtbtablaRobot.setRowSorter(trs);
     }
     
     /**
@@ -142,7 +156,7 @@ public class RobotWindow extends javax.swing.JFrame {
         jMenu7 = new javax.swing.JMenu();
         jMenu8 = new javax.swing.JMenu();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tablaDocAc = new javax.swing.JTable();
+        jtbtablaRobot = new javax.swing.JTable();
         migaFilter = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         idFilter = new javax.swing.JTextField();
@@ -151,6 +165,8 @@ public class RobotWindow extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabelmiga = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jbtGenerarCabeceraSolicitudA = new javax.swing.JButton();
+        jbtSolicitudAInfo = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         buscarCablesButton = new javax.swing.JMenuItem();
@@ -193,7 +209,8 @@ public class RobotWindow extends javax.swing.JFrame {
             }
         });
 
-        tablaDocAc.setModel(new javax.swing.table.DefaultTableModel(
+        jtbtablaRobot.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        jtbtablaRobot.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -204,10 +221,11 @@ public class RobotWindow extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tablaDocAc.setToolTipText("");
-        tablaDocAc.setColumnSelectionAllowed(true);
-        tablaDocAc.setSelectionBackground(new java.awt.Color(51, 153, 255));
-        jScrollPane1.setViewportView(tablaDocAc);
+        jtbtablaRobot.setToolTipText("");
+        jtbtablaRobot.setAutoscrolls(false);
+        jtbtablaRobot.setColumnSelectionAllowed(true);
+        jtbtablaRobot.setSelectionBackground(new java.awt.Color(51, 153, 255));
+        jScrollPane1.setViewportView(jtbtablaRobot);
 
         migaFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -215,6 +233,7 @@ public class RobotWindow extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("Filtrar IPID_ID: ");
 
@@ -224,6 +243,7 @@ public class RobotWindow extends javax.swing.JFrame {
             }
         });
 
+        resetFilterButton1.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         resetFilterButton1.setText("Eliminar filtros");
         resetFilterButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -237,16 +257,36 @@ public class RobotWindow extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("Filtrar Identificador:");
         jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
 
+        jLabelmiga.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         jLabelmiga.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabelmiga.setText("Filtrar Miga: ");
 
         jLabel1.setFont(new java.awt.Font("Consolas", 2, 10)); // NOI18N
         jLabel1.setText("Desarrollado por Álvaro Rofa Aranda");
+
+        jbtGenerarCabeceraSolicitudA.setFont(new java.awt.Font("Consolas", 2, 10)); // NOI18N
+        jbtGenerarCabeceraSolicitudA.setText("Generar Cabecera Solicitud A");
+        jbtGenerarCabeceraSolicitudA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtGenerarCabeceraSolicitudAActionPerformed(evt);
+            }
+        });
+
+        jbtSolicitudAInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/view_info.png"))); // NOI18N
+        jbtSolicitudAInfo.setBorderPainted(false);
+        jbtSolicitudAInfo.setContentAreaFilled(false);
+        jbtSolicitudAInfo.setFocusPainted(false);
+        jbtSolicitudAInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtSolicitudAInfoActionPerformed(evt);
+            }
+        });
 
         jMenu2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jMenu2.setText("Acciones");
@@ -350,16 +390,19 @@ public class RobotWindow extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(identificacionFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(29, 29, 29)
+                                .addComponent(resetFilterButton1)
+                                .addGap(363, 696, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(idFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(migaFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(identificacionFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(29, 29, 29)
-                                        .addComponent(resetFilterButton1)))
-                                .addGap(363, 698, Short.MAX_VALUE))))
+                                .addComponent(migaFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jbtSolicitudAInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jbtGenerarCabeceraSolicitudA))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel1)))
@@ -369,11 +412,14 @@ public class RobotWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(migaFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelmiga, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jbtSolicitudAInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(migaFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabelmiga, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jbtGenerarCabeceraSolicitudA)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -446,6 +492,38 @@ public class RobotWindow extends javax.swing.JFrame {
     private void defaultButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultButtonActionPerformed
         this.establecerVista(6);
     }//GEN-LAST:event_defaultButtonActionPerformed
+
+    private void jbtGenerarCabeceraSolicitudAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtGenerarCabeceraSolicitudAActionPerformed
+
+        String ipidSelected = (String) this.jtbtablaRobot.getValueAt(this.jtbtablaRobot.getSelectedRow(), this.jtbtablaRobot.getSelectedColumn());
+        String migaSelected = (String) this.jtbtablaRobot.getValueAt(this.jtbtablaRobot.getSelectedRow(), 1);
+        if(ipidSelected != null){
+            Registro registro = RegistroApplication.getRegistro(registros, migaSelected, ipidSelected);
+            if (registro.getElementoPasivo().length() > 4 || registro.getUso().equals("E") && !registro.getEstado().equals("ANULADA CON COSTE") && !registro.getEstado().equals("BAJA CONFIRMADA")) {
+                new SolicitudAWindow(registro).setVisible(true);
+            } else if (registro.getEstado().equals("ANULADA CON COSTE") || registro.getEstado().equals("BAJA CONFIRMADA")) {
+                JOptionPane.showMessageDialog(null, "La SUC del elemento seleccionado ha sido dada de baja.",
+                        "Error Cabecera Solicitud A", 0);
+            } else {
+                JOptionPane.showMessageDialog(null, "El elemento seleccionado no tiene elemento pasivo en su fila.",
+                        "Error Cabecera Solicitud A", 0);
+            }
+        }        
+    }//GEN-LAST:event_jbtGenerarCabeceraSolicitudAActionPerformed
+
+    private void jbtSolicitudAInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSolicitudAInfoActionPerformed
+        JOptionPane.showMessageDialog(null,"Para generar la cabecera solo debes pulsar en la tabla el IPID del registro del cual quieres generar la cabecera.\nDespués solo debes pulsar el botón para generar el mensaje.", 
+                    "Cabecera Solicitud A" , 1);        
+    }//GEN-LAST:event_jbtSolicitudAInfoActionPerformed
+    
+    private void defaultConfigTable(){
+        jtbtablaRobot.getTableHeader().setReorderingAllowed(false) ;
+        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        jtbtablaRobot.getColumnModel().getColumn(ConstData.NUM_SUC_POSITION_JTABLE).setCellRenderer(centerRenderer);
+        jtbtablaRobot.getColumnModel().getColumn(ConstData.MIGA_POSITION_JTABLE).setCellRenderer(centerRenderer);
+        jtbtablaRobot.getColumnModel().getColumn(ConstData.USEDATA_POSITION_JTABLE).setCellRenderer(centerRenderer);
+        jtbtablaRobot.getColumnModel().getColumn(ConstData.IPID_POSITION_JTABLE).setCellRenderer(centerRenderer);
+    }
     
     private void resetFilter(){
         idFilter.setText(null);
@@ -498,7 +576,7 @@ public class RobotWindow extends javax.swing.JFrame {
             @Override
             public void run() {
                 try {
-                    new RobotWindow(FileReader.readCSVData("Files//Robot_Tesa_W49.csv") , "ROBOT_RUN").setVisible(true);
+                    new RobotWindow(FilesReader.readCSVData("Files//Robot_Tesa_W49.csv") , "ROBOT_RUN").setVisible(true);
                 } catch (NoFilesException ex) {
                     JOptionPane.showMessageDialog(null,ex.getMessage(), "Error: Fichero" , 0);
                 }
@@ -534,10 +612,12 @@ public class RobotWindow extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar3;
     private javax.swing.JMenuBar jMenuBar4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jbtGenerarCabeceraSolicitudA;
+    private javax.swing.JButton jbtSolicitudAInfo;
+    private javax.swing.JTable jtbtablaRobot;
     private javax.swing.JTextField migaFilter;
     private javax.swing.JMenuItem minimalistaButton;
     private javax.swing.JButton resetFilterButton1;
-    private javax.swing.JTable tablaDocAc;
     private javax.swing.JMenuItem textureButton;
     private javax.swing.JMenuItem windowsclassicButton;
     // End of variables declaration//GEN-END:variables

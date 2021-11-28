@@ -11,8 +11,8 @@ package Exceptions;
  */
 public class NoFilesException extends Exception{
     public NoFilesException(){
-        super("No se ha encontrado ningún fichero. Recuerda poner los siguientes nombres a los fichero:"
-                + "\n -'actual.csv'  en el robot 2021."
-                + "\n -'Robot_Tesa_W49.csv'  en el robot 2020'");
+        super("No se ha encontrado ningún fichero. Recuerda introducir en la carpeta File los siguientes fichero:"
+                + "\n -'Robot_Tesa_2020-2021_WXX.csv'  como Robot_2021."
+                + "\n -'Robot_Tesa_W49.csv'  como Robot_2020'");
     }    
 }
