@@ -10,6 +10,7 @@ import ClassApplication.RegistroApplication;
 import Constantes.ConstData;
 import DataClass.Registro;
 import Exceptions.NoFilesException;
+import Exceptions.SolicitudAException;
 import com.jtattoo.plaf.aero.AeroLookAndFeel;
 import com.jtattoo.plaf.aluminium.AluminiumLookAndFeel;
 import com.jtattoo.plaf.bernstein.BernsteinLookAndFeel;
@@ -18,12 +19,17 @@ import com.jtattoo.plaf.luna.LunaLookAndFeel;
 import com.jtattoo.plaf.mcwin.McWinLookAndFeel;
 import com.jtattoo.plaf.texture.TextureLookAndFeel;
 import com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel;
+import java.awt.Desktop;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -167,6 +173,8 @@ public class RobotWindow extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jbtGenerarCabeceraSolicitudA = new javax.swing.JButton();
         jbtSolicitudAInfo = new javax.swing.JButton();
+        jbtAbrirPlantilla = new javax.swing.JButton();
+        jbtAbrirPlantillaInfo = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         buscarCablesButton = new javax.swing.JMenuItem();
@@ -288,6 +296,24 @@ public class RobotWindow extends javax.swing.JFrame {
             }
         });
 
+        jbtAbrirPlantilla.setFont(new java.awt.Font("Consolas", 2, 10)); // NOI18N
+        jbtAbrirPlantilla.setText("Abrir Plantilla");
+        jbtAbrirPlantilla.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtAbrirPlantillaActionPerformed(evt);
+            }
+        });
+
+        jbtAbrirPlantillaInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/view_info.png"))); // NOI18N
+        jbtAbrirPlantillaInfo.setBorderPainted(false);
+        jbtAbrirPlantillaInfo.setContentAreaFilled(false);
+        jbtAbrirPlantillaInfo.setFocusPainted(false);
+        jbtAbrirPlantillaInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtAbrirPlantillaInfoActionPerformed(evt);
+            }
+        });
+
         jMenu2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jMenu2.setText("Acciones");
 
@@ -394,15 +420,19 @@ public class RobotWindow extends javax.swing.JFrame {
                                 .addGap(29, 29, 29)
                                 .addComponent(resetFilterButton1)
                                 .addGap(363, 696, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(idFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(migaFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jbtSolicitudAInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jbtGenerarCabeceraSolicitudA))))
+                                .addComponent(jbtGenerarCabeceraSolicitudA))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(idFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jbtAbrirPlantillaInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jbtAbrirPlantilla)
+                                .addGap(78, 78, 78))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel1)))
@@ -412,18 +442,22 @@ public class RobotWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jbtSolicitudAInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(migaFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabelmiga, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jbtGenerarCabeceraSolicitudA)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(idFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jbtSolicitudAInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(migaFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabelmiga, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jbtGenerarCabeceraSolicitudA)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(idFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jbtAbrirPlantillaInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtAbrirPlantilla))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(resetFilterButton1)
@@ -494,27 +528,61 @@ public class RobotWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_defaultButtonActionPerformed
 
     private void jbtGenerarCabeceraSolicitudAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtGenerarCabeceraSolicitudAActionPerformed
-
-        String ipidSelected = (String) this.jtbtablaRobot.getValueAt(this.jtbtablaRobot.getSelectedRow(), this.jtbtablaRobot.getSelectedColumn());
-        String migaSelected = (String) this.jtbtablaRobot.getValueAt(this.jtbtablaRobot.getSelectedRow(), 1);
-        if(ipidSelected != null){
-            Registro registro = RegistroApplication.getRegistro(registros, migaSelected, ipidSelected);
-            if (registro.getElementoPasivo().length() > 4 || registro.getUso().equals("E") && !registro.getEstado().equals("ANULADA CON COSTE") && !registro.getEstado().equals("BAJA CONFIRMADA")) {
-                new SolicitudAWindow(registro).setVisible(true);
-            } else if (registro.getEstado().equals("ANULADA CON COSTE") || registro.getEstado().equals("BAJA CONFIRMADA")) {
-                JOptionPane.showMessageDialog(null, "La SUC del elemento seleccionado ha sido dada de baja.",
-                        "Error Cabecera Solicitud A", 0);
-            } else {
-                JOptionPane.showMessageDialog(null, "El elemento seleccionado no tiene elemento pasivo en su fila.",
-                        "Error Cabecera Solicitud A", 0);
+        try {
+            String ipidSelected = (String) this.jtbtablaRobot.getValueAt(this.jtbtablaRobot.getSelectedRow(), this.jtbtablaRobot.getSelectedColumn());
+            String migaSelected = (String) this.jtbtablaRobot.getValueAt(this.jtbtablaRobot.getSelectedRow(), 1);
+            
+            if (ipidSelected != null) {
+                String numSuc = (String) this.jtbtablaRobot.getValueAt(this.jtbtablaRobot.getSelectedRow(), 0);
+                String estado = (String) this.jtbtablaRobot.getValueAt(this.jtbtablaRobot.getSelectedRow(), 2);
+                String id = (String) this.jtbtablaRobot.getValueAt(this.jtbtablaRobot.getSelectedRow(), 3);
+                String uso  = (String) this.jtbtablaRobot.getValueAt(this.jtbtablaRobot.getSelectedRow(), 4);
+                String cable  = (String) this.jtbtablaRobot.getValueAt(this.jtbtablaRobot.getSelectedRow(), 5);
+                String elemento  = (String) this.jtbtablaRobot.getValueAt(this.jtbtablaRobot.getSelectedRow(), 6);
+                
+                Registro registro = new Registro(numSuc, migaSelected, estado, id, uso, cable, elemento, ipidSelected);
+                String message = null;
+                switch (RegistroApplication.canUseSolicitudA(registro)) {
+                    case 1:
+                        //Devuelve 1 si solo se usa empalme
+                        message = ("\n\n" + registro.getIdentificador().toUpperCase() + " CON EMPALME SOLICITADO EN SUC " + registro.getNumeroSUC().toUpperCase());
+                        break;
+                    case 2:
+                        //Devuelve 2 si se puede usar registro de entrada
+                        message = ("\n\n" + registro.getIdentificador().toUpperCase() + " CON REGISTRO DE ENTRADA SOLICITADO EN SUC " + registro.getNumeroSUC().toUpperCase());
+                        break;
+                    case 3:
+                        //Devuelve 3 si se usan las dos cosas.
+                        message = ("\n\n" + registro.getIdentificador().toUpperCase() + " CON EMPALME Y REGISTRO DE ENTRADA SOLICITADO EN SUC " + registro.getNumeroSUC().toUpperCase());
+                        break;
+                }
+                new SolicitudAWindow(message).setVisible(true);
             }
-        }        
+        } catch (SolicitudAException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error Cabecera Solicitud A", 0);
+        } catch (java.lang.ArrayIndexOutOfBoundsException ex) {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar un IPID de un registro de la columna IPID.", "Error Cabecera Solicitud A", 0);
+        }
     }//GEN-LAST:event_jbtGenerarCabeceraSolicitudAActionPerformed
 
     private void jbtSolicitudAInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSolicitudAInfoActionPerformed
         JOptionPane.showMessageDialog(null,"Para generar la cabecera solo debes pulsar en la tabla el IPID del registro del cual quieres generar la cabecera.\nDespués solo debes pulsar el botón para generar el mensaje.", 
                     "Cabecera Solicitud A" , 1);        
     }//GEN-LAST:event_jbtSolicitudAInfoActionPerformed
+
+    private void jbtAbrirPlantillaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAbrirPlantillaActionPerformed
+         try {
+            File objetofile = new File("Files//Manual//PLANTILLARQ.ppt");
+            Desktop.getDesktop().open(objetofile);
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }  
+    }//GEN-LAST:event_jbtAbrirPlantillaActionPerformed
+
+    private void jbtAbrirPlantillaInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAbrirPlantillaInfoActionPerformed
+         JOptionPane.showMessageDialog(null,"Abre la plantilla de diseño de SUCS de Orange", 
+                    "Abrir Plantilla" , 1);  
+    }//GEN-LAST:event_jbtAbrirPlantillaInfoActionPerformed
     
     private void defaultConfigTable(){
         jtbtablaRobot.getTableHeader().setReorderingAllowed(false) ;
@@ -612,6 +680,8 @@ public class RobotWindow extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar3;
     private javax.swing.JMenuBar jMenuBar4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jbtAbrirPlantilla;
+    private javax.swing.JButton jbtAbrirPlantillaInfo;
     private javax.swing.JButton jbtGenerarCabeceraSolicitudA;
     private javax.swing.JButton jbtSolicitudAInfo;
     private javax.swing.JTable jtbtablaRobot;

@@ -5,9 +5,12 @@
  */
 package ClassApplication;
 
+import AppInterface.SolicitudAWindow;
 import DataClass.Registro;
 import Exceptions.NoRelationshipException;
+import Exceptions.SolicitudAException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -129,5 +132,29 @@ public final class RegistroApplication {
         return null;
     }
     
-    
+    /**
+     * Devuelve si se puede usar o no el solicitud A en un registro. Los estados serán:
+     * @param registro
+     * @return Devuelve 0 si no se puede usar, devuelve 1 si solo se usa empalme, devuelve 2 si se puede usar registro de entrada y devuelve 3 si se usan las dos cosas.
+     * @throws SolicitudAException 
+     */
+    public static int canUseSolicitudA(Registro registro) throws SolicitudAException {
+        if (registro.getEstado().replaceAll(" ", "").contains("ANULADA") || 
+            registro.getEstado().replaceAll(" ", "").contains("BAJA") || 
+            registro.getEstado().replaceAll(" ", "").contains("INVIABLE")) {
+            throw new SolicitudAException("La SUC que pertenece al registro ha sido Anulada, dada de Baja o es Inviable.");
+        } else {
+            if (registro.getElementoPasivo().replaceAll(" ", "").length() > 4 && registro.getUso().replaceAll(" ", "").equals("E")) {
+                return 3;
+            } else if (registro.getElementoPasivo().length() > 4 || registro.getUso().equals("Emp")) {
+                return 1;
+            } else if (registro.getElementoPasivo().length() < 4 && registro.getUso().equals("E")) {
+                return 2;
+            } else {
+                throw new SolicitudAException("No se ha solicitado ni empalme ni registro de entrada en el registro " + registro.getIPIDID());
+            }
+        }
+        //SI NO ESTÁ EN ESTADO INCORRECTO, PASAMOS A VER SI CONTIENE ELEMENTO PASIVO O USO ENTRADA
+     
+    }
 }

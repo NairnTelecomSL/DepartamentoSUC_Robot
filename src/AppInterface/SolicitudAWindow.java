@@ -18,20 +18,13 @@ import javax.swing.text.StyledDocument;
  */
 public class SolicitudAWindow extends javax.swing.JFrame {
 
-    public SolicitudAWindow(Registro registro) {
+    public SolicitudAWindow(String message) {
         initComponents();
         StyledDocument doc = this.jtpSolicitudA.getStyledDocument(); 
         SimpleAttributeSet center = new SimpleAttributeSet(); 
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER); 
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
-
-        if(registro.getUso().equals("E") && registro.getElementoPasivo().length() <= 3){
-            this.jtpSolicitudA.setText("\n\n" + registro.getIdentificador().toUpperCase() + " REGISTRO DE ENTRADA SOLICITADO EN SUC " + registro.getNumeroSUC().toUpperCase());
-        }else if(registro.getUso().equals("E") && registro.getElementoPasivo().length() > 3){
-            this.jtpSolicitudA.setText("\n\n" + registro.getIdentificador().toUpperCase() + " CON EMPALME Y REGISTRO DE ENTRADA SOLICITADO EN SUC " + registro.getNumeroSUC().toUpperCase());
-        }else{
-            this.jtpSolicitudA.setText("\n\n" + registro.getIdentificador().toUpperCase() + " CON EMPALME SOLICITADO EN SUC " + registro.getNumeroSUC().toUpperCase());
-        }
+        this.jtpSolicitudA.setText(message);       
     }
      
     @Override
